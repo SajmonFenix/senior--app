@@ -7,9 +7,10 @@
     <title>Informácie pre Seniorov</title>
 
     <!-- PWA Manifest -->
-    <link rel="manifest" id="manifest-placeholder">
+    <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#667eea">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Seniori">
 
@@ -172,67 +173,67 @@
     </div>
 
     <script>
-        // Create manifest dynamically
-        const manifestData = {
-            "name": "Informácie pre Seniorov",
-            "short_name": "Seniori",
-            "description": "Jednoduché zobrazenie dátumu a počasia pre seniorov",
-            "start_url": "./",
-            "display": "standalone",
-            "background_color": "#ffffff",
-            "theme_color": "#667eea",
-            "orientation": "portrait",
-            "icons": [
-                {
-                    "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMeSURBVHgB7doxAQAADMOg+TfdyCgLHrhVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4FkbBwADLejlcgAAAABJRU5ErkJggg==",
-                    "sizes": "180x180",
-                    "type": "image/png"
-                },
-                {
-                    "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMeSURBVHgB7doxAQAADMOg+TfdyCgLHrhVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4FkbBwADLejlcgAAAABJRU5ErkJggg==",
-                    "sizes": "512x512",
-                    "type": "image/png"
-                }
-            ]
-        };
-
-        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
-        const manifestURL = URL.createObjectURL(manifestBlob);
-        document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
+        // Static manifest linked in <head>
 
         // Slovak translations
         const daysOfWeek = ['Nedeľa', 'Pondelok', 'Utorok', 'Streda', 'Štvrtok', 'Piatok', 'Sobota'];
         const months = ['január', 'február', 'marec', 'apríl', 'máj', 'jún', 'júl', 'august', 'september', 'október', 'november', 'december'];
 
         const weatherIcons = {
-            'Clear': '☀️',
-            'Clouds': '☁️',
-            'Rain': '🌧️',
-            'Drizzle': '🌦️',
-            'Thunderstorm': '⛈️',
-            'Snow': '❄️',
-            'Mist': '🌫️',
-            'Fog': '🌫️',
-            'Haze': '🌫️'
+            'slnečno': '☀️',
+            'jasno': '☀️',
+            'polojasno': '🌤️',
+            'oblačno': '☁️',
+            'zamračené': '☁️',
+            'prehánky': '🌦️',
+            'dážď': '🌧️',
+            'búrka': '⛈️',
+            'sneh': '❄️',
+            'hmla': '🌫️'
         };
 
-        const weatherTranslations = {
-            'clear sky': 'jasno',
-            'few clouds': 'málo oblačno',
-            'scattered clouds': 'polojasno',
-            'broken clouds': 'oblačno',
-            'overcast clouds': 'zamračené',
-            'shower rain': 'prehánky',
-            'rain': 'dážď',
-            'thunderstorm': 'búrka',
-            'snow': 'sneh',
-            'mist': 'hmla',
-            'light rain': 'slabý dážď',
-            'moderate rain': 'mierny dážď',
-            'heavy rain': 'silný dážď',
-            'light snow': 'slabé sneženie',
-            'heavy snow': 'silné sneženie'
+        // WMO weather codes -> Slovak description + icon key
+        const wmoToSk = {
+            0: 'jasno',
+            1: 'polojasno',
+            2: 'polojasno',
+            3: 'oblačno',
+            45: 'hmla',
+            48: 'hmla',
+            51: 'slabý dážď',
+            53: 'mierny dážď',
+            55: 'silný dážď',
+            56: 'slabý mrznúci dážď',
+            57: 'silný mrznúci dážď',
+            61: 'slabý dážď',
+            63: 'mierny dážď',
+            65: 'silný dážď',
+            66: 'slabý mrznúci dážď',
+            67: 'silný mrznúci dážď',
+            71: 'slabé sneženie',
+            73: 'mierne sneženie',
+            75: 'silné sneženie',
+            77: 'snehové kryštáliky',
+            80: 'prehánky',
+            81: 'prehánky',
+            82: 'silné prehánky',
+            85: 'snehové prehánky',
+            86: 'silné snehové prehánky',
+            95: 'búrka',
+            96: 'búrka so slabým krupobitím',
+            99: 'búrka so silným krupobitím'
         };
+
+        function pickIcon(skDesc) {
+            if (skDesc.includes('búrka')) return '⛈️';
+            if (skDesc.includes('sneh')) return '❄️';
+            if (skDesc.includes('hmla')) return '🌫️';
+            if (skDesc.includes('prehánky')) return '🌦️';
+            if (skDesc.includes('dážď')) return '🌧️';
+            if (skDesc.includes('zamračené') || skDesc.includes('oblačno')) return '☁️';
+            if (skDesc.includes('polojasno')) return '🌤️';
+            return '☀️';
+        }
 
         function updateDateTime() {
             const now = new Date();
@@ -254,44 +255,69 @@
             const container = document.getElementById('weatherContainer');
             container.innerHTML = '<div class="loading">Načítavam počasie...</div>';
 
-            const apiKey = 'bb88dc0f46c39a8fbac6c47f06107feb';
-            const defaultCity = 'Bratislava,SK';
+            const defaultCity = 'Bratislava, Slovensko';
             let rendered = false;
 
-            async function renderFromResponse(response) {
-                if (!response.ok) throw new Error('Chyba pri získavaní počasia');
-                const data = await response.json();
-                const temp = Math.round(data.main.temp);
-                const weatherMain = data.weather[0].main;
-                const weatherDesc = weatherTranslations[data.weather[0].description.toLowerCase()] || data.weather[0].description;
-                const icon = weatherIcons[weatherMain] || '🌡️';
-                const city = data.name;
+            function renderWeather(tempC, skDesc, cityName) {
 
                 // Prevent double-render
                 if (rendered) return;
                 rendered = true;
                 container.innerHTML = `
-                    <div class="weather-icon">${icon}</div>
-                    <div class="temperature">${temp}°C</div>
-                    <div class="weather-desc">${weatherDesc}</div>
-                    <div class="location">${city}</div>
+                    <div class="weather-icon">${pickIcon(skDesc)}</div>
+                    <div class="temperature">${Math.round(tempC)}°C</div>
+                    <div class="weather-desc">${skDesc}</div>
+                    <div class="location">${cityName}</div>
                 `;
 
                 localStorage.setItem('lastWeatherData', JSON.stringify({
-                    temp, weatherMain, weatherDesc, icon, city, timestamp: Date.now()
+                    temp: Math.round(tempC), weatherMain: skDesc, weatherDesc: skDesc, icon: pickIcon(skDesc), city: cityName, timestamp: Date.now()
                 }));
             }
 
-            async function fetchByCoords(lat, lon) {
-                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=sk`;
+            async function reverseGeocode(lat, lon) {
+                const url = `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&language=sk&count=1`;
                 const resp = await fetch(url);
-                await renderFromResponse(resp);
+                if (!resp.ok) return '';
+                const data = await resp.json();
+                const hit = data && data.results && data.results[0];
+                if (!hit) return '';
+                const parts = [hit.city || hit.name, hit.country].filter(Boolean);
+                return parts.join(', ');
+            }
+
+            async function fetchByCoords(lat, lon) {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`;
+                const resp = await fetch(url);
+                if (!resp.ok) throw new Error('Chyba pri získavaní počasia');
+                const data = await resp.json();
+                const temp = data.current && data.current.temperature_2m;
+                const code = data.current && data.current.weather_code;
+                const skDesc = wmoToSk[code] || 'počasie';
+                const cityName = await reverseGeocode(lat, lon) || 'Vaša poloha';
+                renderWeather(temp, skDesc, cityName);
+            }
+
+            async function geocodeCity(city) {
+                const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=sk`;
+                const resp = await fetch(url);
+                if (!resp.ok) throw new Error('Geokódovanie zlyhalo');
+                const data = await resp.json();
+                const hit = data && data.results && data.results[0];
+                if (!hit) throw new Error('Mesto nenájdené');
+                return { lat: hit.latitude, lon: hit.longitude, label: `${hit.name}${hit.country ? ', ' + hit.country : ''}` };
             }
 
             async function fetchByCity(city) {
-                const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric&lang=sk`;
+                const { lat, lon, label } = await geocodeCity(city);
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`;
                 const resp = await fetch(url);
-                await renderFromResponse(resp);
+                if (!resp.ok) throw new Error('Chyba pri získavaní počasia');
+                const data = await resp.json();
+                const temp = data.current && data.current.temperature_2m;
+                const code = data.current && data.current.weather_code;
+                const skDesc = wmoToSk[code] || 'počasie';
+                renderWeather(temp, skDesc, label || city);
             }
 
             async function fetchByIP() {
@@ -302,7 +328,7 @@
                 if (ipData && ipData.latitude && ipData.longitude) {
                     await fetchByCoords(ipData.latitude, ipData.longitude);
                 } else if (ipData && ipData.city) {
-                    await fetchByCity(`${ipData.city}${ipData.country ? ',' + ipData.country : ''}`);
+                    await fetchByCity(`${ipData.city}${ipData.country ? ', ' + ipData.country_name : ''}`);
                 } else {
                     await fetchByCity(defaultCity);
                 }
@@ -361,23 +387,23 @@
                             const data = JSON.parse(cached);
                             const age = Math.floor((Date.now() - data.timestamp) / 60000);
                             container.innerHTML = `
-                                <div class="weather-icon">${data.icon}</div>
-                                <div class="temperature">${data.temp}°C</div>
-                                <div class="weather-desc">${data.weatherDesc}</div>
-                                <div class="location">${data.city}</div>
-                                <div style="font-size: 18px; margin-top: 15px; opacity: 0.8;">
-                                    Údaje spred ${age} minút
-                                </div>
-                            `;
+                        <div class="weather-icon">${data.icon}</div>
+                        <div class="temperature">${data.temp}°C</div>
+                        <div class="weather-desc">${data.weatherDesc}</div>
+                        <div class="location">${data.city}</div>
+                        <div style="font-size: 18px; margin-top: 15px; opacity: 0.8;">
+                            Údaje spred ${age} minút
+                        </div>
+                    `;
                         } else {
                             container.innerHTML = `
-                                <div class="error">
-                                    ⚠️ Nemôžem získať počasie<br><br>
-                                    Skontrolujte:<br>
-                                    • Pripojenie k internetu<br>
+                        <div class="error">
+                            ⚠️ Nemôžem získať počasie<br><br>
+                            Skontrolujte:<br>
+                            • Pripojenie k internetu<br>
                                     • Povoľte prístup k polohe (alebo skúste neskôr)
-                                </div>
-                            `;
+                        </div>
+                    `;
                         }
                     }
                 }
@@ -391,28 +417,11 @@
         updateWeather();
         setInterval(updateWeather, 600000); // Update every 10 minutes
 
-        // Service Worker registration
+        // Service Worker registration (must be same-origin http/https URL for GitHub Pages)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                const swCode = `
-                    self.addEventListener('install', (e) => {
-                        self.skipWaiting();
-                    });
-                    
-                    self.addEventListener('activate', (e) => {
-                        self.clients.claim();
-                    });
-                    
-                    self.addEventListener('fetch', (e) => {
-                        e.respondWith(fetch(e.request));
-                    });
-                `;
-
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                const swURL = URL.createObjectURL(blob);
-
-                navigator.serviceWorker.register(swURL)
-                    .then(reg => console.log('SW registered'))
+                navigator.serviceWorker.register('sw.js')
+                    .then(() => console.log('SW registered'))
                     .catch(err => console.log('SW error:', err));
             });
         }
