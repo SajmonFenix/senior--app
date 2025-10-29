@@ -10,7 +10,7 @@
     "orientation": "portrait",
     "icons": [
         {
-            "src": "https://github.com/SajmonFenix/senior--app/blob/main/SenioriApp.png",
+            "src": "apple-touch-icon.png",
             "sizes": "1024x1024",
             "type": "image/png"
         }
