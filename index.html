@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="sk">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Informácie pre Seniorov</title>
-    
+
     <!-- PWA Manifest -->
     <link rel="manifest" id="manifest-placeholder">
     <meta name="theme-color" content="#667eea">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Seniori">
-    
+
     <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMeSURBVHgB7doxAQAADMOg+TfdyCgLHrhVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4FkbBwADLejlcgAAAABJRU5ErkJggg==">
-    
+    <link rel="apple-touch-icon"
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMeSURBVHgB7doxAQAADMOg+TfdyCgLHrhVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4FkbBwADLejlcgAAAABJRU5ErkJggg==">
+
     <style>
         * {
             margin: 0;
@@ -38,7 +40,7 @@
             background: white;
             border-radius: 30px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             max-width: 600px;
             width: 100%;
             text-align: center;
@@ -132,35 +134,36 @@
             .container {
                 padding: 30px 20px;
             }
-            
+
             .day-name {
                 font-size: 36px;
             }
-            
+
             .date {
                 font-size: 56px;
             }
-            
+
             .time {
                 font-size: 28px;
             }
-            
+
             .temperature {
                 font-size: 52px;
             }
-            
+
             .weather-desc {
                 font-size: 26px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="day-name" id="dayName"></div>
         <div class="date" id="date"></div>
         <div class="time" id="time"></div>
-        
+
         <div class="weather-container" id="weatherContainer">
             <div class="loading">Načítavam počasie...</div>
         </div>
@@ -193,7 +196,7 @@
             ]
         };
 
-        const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
         const manifestURL = URL.createObjectURL(manifestBlob);
         document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
 
@@ -233,15 +236,15 @@
 
         function updateDateTime() {
             const now = new Date();
-            
+
             const dayName = daysOfWeek[now.getDay()];
             document.getElementById('dayName').textContent = dayName;
-            
+
             const day = now.getDate();
             const month = months[now.getMonth()];
             const year = now.getFullYear();
             document.getElementById('date').textContent = `${day}. ${month} ${year}`;
-            
+
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             document.getElementById('time').textContent = `${hours}:${minutes}`;
@@ -251,35 +254,22 @@
             const container = document.getElementById('weatherContainer');
             container.innerHTML = '<div class="loading">Načítavam počasie...</div>';
 
-            try {
-                const position = await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, reject, {
-                        enableHighAccuracy: false,
-                        timeout: 10000,
-                        maximumAge: 300000
-                    });
-                });
+            const apiKey = 'bb88dc0f46c39a8fbac6c47f06107feb';
+            const defaultCity = 'Bratislava,SK';
+            let rendered = false;
 
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                
-                const apiKey = 'bb88dc0f46c39a8fbac6c47f06107feb';
-                const response = await fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=sk`
-                );
-                
-                if (!response.ok) {
-                    throw new Error('Chyba pri získavaní počasia');
-                }
-                
+            async function renderFromResponse(response) {
+                if (!response.ok) throw new Error('Chyba pri získavaní počasia');
                 const data = await response.json();
-                
                 const temp = Math.round(data.main.temp);
                 const weatherMain = data.weather[0].main;
                 const weatherDesc = weatherTranslations[data.weather[0].description.toLowerCase()] || data.weather[0].description;
                 const icon = weatherIcons[weatherMain] || '🌡️';
                 const city = data.name;
 
+                // Prevent double-render
+                if (rendered) return;
+                rendered = true;
                 container.innerHTML = `
                     <div class="weather-icon">${icon}</div>
                     <div class="temperature">${temp}°C</div>
@@ -287,36 +277,109 @@
                     <div class="location">${city}</div>
                 `;
 
-                // Save to cache
                 localStorage.setItem('lastWeatherData', JSON.stringify({
                     temp, weatherMain, weatherDesc, icon, city, timestamp: Date.now()
                 }));
-            } catch (error) {
-                console.error('Weather error:', error);
-                
-                // Try to load from cache
-                const cached = localStorage.getItem('lastWeatherData');
-                if (cached) {
-                    const data = JSON.parse(cached);
-                    const age = Math.floor((Date.now() - data.timestamp) / 60000);
-                    container.innerHTML = `
-                        <div class="weather-icon">${data.icon}</div>
-                        <div class="temperature">${data.temp}°C</div>
-                        <div class="weather-desc">${data.weatherDesc}</div>
-                        <div class="location">${data.city}</div>
-                        <div style="font-size: 18px; margin-top: 15px; opacity: 0.8;">
-                            Údaje spred ${age} minút
-                        </div>
-                    `;
+            }
+
+            async function fetchByCoords(lat, lon) {
+                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=sk`;
+                const resp = await fetch(url);
+                await renderFromResponse(resp);
+            }
+
+            async function fetchByCity(city) {
+                const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric&lang=sk`;
+                const resp = await fetch(url);
+                await renderFromResponse(resp);
+            }
+
+            async function fetchByIP() {
+                // Lightweight IP geo fallback (no key)
+                const ipResp = await fetch('https://ipapi.co/json/');
+                if (!ipResp.ok) throw new Error('IP geolokácia zlyhala');
+                const ipData = await ipResp.json();
+                if (ipData && ipData.latitude && ipData.longitude) {
+                    await fetchByCoords(ipData.latitude, ipData.longitude);
+                } else if (ipData && ipData.city) {
+                    await fetchByCity(`${ipData.city}${ipData.country ? ',' + ipData.country : ''}`);
                 } else {
-                    container.innerHTML = `
-                        <div class="error">
-                            ⚠️ Nemôžem získať počasie<br><br>
-                            Skontrolujte:<br>
-                            • Pripojenie k internetu<br>
-                            • Povoľte prístup k polohe
-                        </div>
-                    `;
+                    await fetchByCity(defaultCity);
+                }
+            }
+
+            try {
+                // Fire a soft timeout fallback if geolocation hangs
+                const softTimeout = setTimeout(() => {
+                    if (!rendered) {
+                        fetchByIP().catch(() => fetchByCity(defaultCity));
+                    }
+                }, 3500);
+
+                // Prefer permissions API to avoid long hangs when denied
+                let permissionState;
+                if (navigator.permissions && navigator.permissions.query) {
+                    try {
+                        const perm = await navigator.permissions.query({ name: 'geolocation' });
+                        permissionState = perm.state; // 'granted' | 'prompt' | 'denied'
+                    } catch (_) {
+                        permissionState = undefined;
+                    }
+                }
+
+                if (permissionState === 'denied') {
+                    // Skip prompt and use fallbacks
+                    clearTimeout(softTimeout);
+                    await fetchByIP().catch(() => fetchByCity(defaultCity));
+                    return;
+                }
+
+                // Try geolocation with short timeout
+                const position = await new Promise((resolve, reject) => {
+                    if (!navigator.geolocation) return reject(new Error('Geolokácia nie je podporovaná'));
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: false,
+                        timeout: 8000,
+                        maximumAge: 300000
+                    });
+                });
+
+                clearTimeout(softTimeout);
+                await fetchByCoords(position.coords.latitude, position.coords.longitude);
+            } catch (geoErr) {
+                console.warn('Geolocation or direct fetch failed, trying fallbacks:', geoErr);
+                try {
+                    await fetchByIP();
+                } catch (ipErr) {
+                    console.warn('IP fallback failed, using default city:', ipErr);
+                    try {
+                        await fetchByCity(defaultCity);
+                    } catch (finalErr) {
+                        console.error('All weather strategies failed:', finalErr);
+                        const cached = localStorage.getItem('lastWeatherData');
+                        if (cached) {
+                            const data = JSON.parse(cached);
+                            const age = Math.floor((Date.now() - data.timestamp) / 60000);
+                            container.innerHTML = `
+                                <div class="weather-icon">${data.icon}</div>
+                                <div class="temperature">${data.temp}°C</div>
+                                <div class="weather-desc">${data.weatherDesc}</div>
+                                <div class="location">${data.city}</div>
+                                <div style="font-size: 18px; margin-top: 15px; opacity: 0.8;">
+                                    Údaje spred ${age} minút
+                                </div>
+                            `;
+                        } else {
+                            container.innerHTML = `
+                                <div class="error">
+                                    ⚠️ Nemôžem získať počasie<br><br>
+                                    Skontrolujte:<br>
+                                    • Pripojenie k internetu<br>
+                                    • Povoľte prístup k polohe (alebo skúste neskôr)
+                                </div>
+                            `;
+                        }
+                    }
                 }
             }
         }
@@ -324,7 +387,7 @@
         // Initialize
         updateDateTime();
         setInterval(updateDateTime, 1000);
-        
+
         updateWeather();
         setInterval(updateWeather, 600000); // Update every 10 minutes
 
@@ -344,10 +407,10 @@
                         e.respondWith(fetch(e.request));
                     });
                 `;
-                
+
                 const blob = new Blob([swCode], { type: 'application/javascript' });
                 const swURL = URL.createObjectURL(blob);
-                
+
                 navigator.serviceWorker.register(swURL)
                     .then(reg => console.log('SW registered'))
                     .catch(err => console.log('SW error:', err));
@@ -355,4 +418,5 @@
         }
     </script>
 </body>
+
 </html>
